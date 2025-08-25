@@ -11,14 +11,17 @@ const HomePage = () => {
   const [dogs, setDogs] = useState<Dog[]>([])
   const [loading, setLoading] = useState(false)
   const [searchDog, setSearchDog] = useState('')
+  const [error, setError] = useState('')
 
   useEffect(() => {
     setLoading(true)
+    setError('')
     axios
       .get('https://api.thedogapi.com/v1/breeds')
       .then((res) => {
         setDogs(res.data)
       })
+      .catch(() => setError('Failed to fetch dog breeds'))
       .finally(() => setLoading(false))
   }, [])
 
@@ -44,6 +47,8 @@ const HomePage = () => {
       </div>
       {loading ? (
         <p>Loading…</p>
+      ) : error ? (
+        <p>{error}</p>
       ) : (
         <ul>
           {filteredDogs.map((dog) => (
