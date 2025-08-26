@@ -74,15 +74,7 @@ const HomePage = () => {
         </>
       )}
       <>
-        <Link
-          to='/compare-dogs'
-          state={{ selected }}
-          style={{
-            padding: '0.5rem 1rem',
-            background: '#007BFF',
-            color: '#fff',
-          }}
-        >
+        <Link to='/compare-dogs' state={{ selected }} className='button-link'>
           Compare Selected Dogs
         </Link>
       </>

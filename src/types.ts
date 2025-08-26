@@ -1,4 +1,6 @@
 export type Dog = {
+  weight?: { imperial: string; metric: string };
+  height?: { imperial: string; metric: string };
   id: number;
   name: string;
   bred_for?: string;
@@ -7,12 +9,4 @@ export type Dog = {
   temperament?: string;
   origin?: string;
   reference_image_id?: string;
-  weight?: {
-    imperial: string;
-    metric: string;
-  };
-  height?: {
-    imperial: string;
-    metric: string;
-  };
 };
