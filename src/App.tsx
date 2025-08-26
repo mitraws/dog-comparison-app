@@ -7,10 +7,8 @@ function App() {
   return (
     <Router>
       <nav>
-        <Link to='/' style={{ padding: 5 }}>
-          Home
-        </Link>
-        <Link to='/compare-dogs' style={{ padding: 5 }}>
+        <Link to='/'>Home</Link>
+        <Link to='/compare-dogs' style={{ padding: 20 }}>
           Compare Dogs
         </Link>
       </nav>

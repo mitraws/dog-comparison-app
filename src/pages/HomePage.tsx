@@ -1,11 +1,7 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-
-interface Dog {
-  id: string
-  name: string
-}
+import type { Dog } from '../types'
 
 const HomePage = () => {
   const [dogs, setDogs] = useState<Dog[]>([])
@@ -80,6 +76,7 @@ const HomePage = () => {
       <>
         <Link
           to='/compare-dogs'
+          state={{ selected }}
           style={{
             padding: '0.5rem 1rem',
             background: '#007BFF',
