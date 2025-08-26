@@ -59,6 +59,7 @@ const HomePage = () => {
             {filteredDogs.map((dog) => (
               <li
                 key={dog.id}
+                data-testid={`dog-${dog.id}`}
                 onClick={() => toggleSelect(dog)}
                 style={{
                   cursor: 'pointer',
