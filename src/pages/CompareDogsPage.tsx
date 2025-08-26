@@ -38,6 +38,7 @@ const CompareDogsPage = () => {
                       <img
                         src={`https://cdn2.thedogapi.com/images/${dog.reference_image_id}.jpg`}
                         alt=''
+                        data-testid={`dog-img-${dog.id}`}
                         className='dog-image'
                       />
                     )}
