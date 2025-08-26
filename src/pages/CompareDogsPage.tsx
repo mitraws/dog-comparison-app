@@ -1,11 +1,11 @@
 import { Link, useLocation } from 'react-router-dom'
-import type { Dog } from '../types'
+import type { ComparableKeys, Dog } from '../types'
 
 const CompareDogsPage = () => {
   const location = useLocation()
   const selectedDogs: Dog[] = location.state?.selected || []
 
-  const rows: { label: string; key: keyof Dog }[] = [
+  const rows: { label: string; key: ComparableKeys }[] = [
     { label: 'Weight (kg)', key: 'weight' },
     { label: 'Height (cm)', key: 'height' },
     { label: 'Bred For', key: 'bred_for' },
@@ -15,35 +15,41 @@ const CompareDogsPage = () => {
     { label: 'Origin', key: 'origin' },
   ]
 
+  const DogHeader = ({ dog }: { dog: Dog }) => (
+    <div className='dog-header'>
+      {dog.reference_image_id && (
+        <img
+          src={`https://cdn2.thedogapi.com/images/${dog.reference_image_id}.jpg`}
+          alt=''
+          data-testid={`dog-img-${dog.id}`}
+          className='dog-image'
+        />
+      )}
+      {dog.name}
+    </div>
+  )
+
+  const renderDogAttribute = (
+    value: string | number | { metric: string } | undefined
+  ) => {
+    if (!value) return '-'
+    if (typeof value === 'object' && 'metric' in value) return value.metric
+    return String(value)
+  }
+
   return (
     <>
       <h1>Dog Comparison table</h1>
       {selectedDogs.length <= 1 ? (
         <p>Return back home and select at least two breeds to compare dogs.</p>
       ) : (
-        <table border={1} cellPadding={8}>
+        <table className='comparison-table'>
           <thead>
             <tr>
               <th></th>
               {selectedDogs.map((dog) => (
                 <th key={dog.id}>
-                  <div
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {dog.reference_image_id && (
-                      <img
-                        src={`https://cdn2.thedogapi.com/images/${dog.reference_image_id}.jpg`}
-                        alt=''
-                        data-testid={`dog-img-${dog.id}`}
-                        className='dog-image'
-                      />
-                    )}
-                    {dog.name}
-                  </div>
+                  <DogHeader dog={dog} />
                 </th>
               ))}
             </tr>
@@ -52,20 +58,9 @@ const CompareDogsPage = () => {
             {rows.map((row) => (
               <tr key={row.key}>
                 <td>{row.label}</td>
-                {selectedDogs.map((dog) => {
-                  const value = dog[row.key]
-
-                  const renderCell = (
-                    value: string | number | { metric: string } | undefined
-                  ) => {
-                    if (!value) return '-'
-                    if (typeof value === 'object' && 'metric' in value)
-                      return value.metric
-                    return String(value)
-                  }
-
-                  return <td key={dog.id}>{renderCell(value)}</td>
-                })}
+                {selectedDogs.map((dog) => (
+                  <td key={dog.id}>{renderDogAttribute(dog[row.key])}</td>
+                ))}
               </tr>
             ))}
           </tbody>

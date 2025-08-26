@@ -42,8 +42,6 @@ describe('HomePage', () => {
     )
 
     const poodleItem = await screen.findByTestId('dog-2')
-    await userEvent.click(poodleItem)
-    expect(poodleItem).toHaveStyle('color: rgb(0, 0, 255)')
 
     expect(poodleItem).toBeInTheDocument()
   })
@@ -56,13 +54,16 @@ describe('HomePage', () => {
     )
 
     const beagleItem = await screen.findByText(/beagle/i)
+    const selectedCount = screen.getByTestId('selected-count')
 
-    expect(beagleItem).toHaveStyle('color: rgb(128, 128, 128)')
-
-    await userEvent.click(beagleItem)
-    expect(beagleItem).toHaveStyle('color: rgb(0, 0, 255)')
+    expect(selectedCount).toHaveTextContent('Select Dog Breeds (0 selected)')
 
     await userEvent.click(beagleItem)
-    expect(beagleItem).toHaveStyle('color: rgb(128, 128, 128)')
+    expect(selectedCount).toHaveTextContent('Select Dog Breeds (1 selected)')
+
+    await userEvent.click(screen.getByText(/beagle/i))
+    expect(screen.getByTestId('selected-count')).toHaveTextContent(
+      'Select Dog Breeds (0 selected)'
+    )
   })
 })

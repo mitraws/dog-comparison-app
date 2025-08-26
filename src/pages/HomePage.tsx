@@ -38,6 +38,19 @@ const HomePage = () => {
         : [...prev, item]
     )
   }
+  const DogItem = ({ dog }: { dog: Dog }) => {
+    const isSelected = selected.some((i) => i.id === dog.id)
+    return (
+      <li
+        data-testid={`dog-${dog.id}`}
+        onClick={() => toggleSelect(dog)}
+        data-selected={isSelected ? 'true' : 'false'}
+        className={`dog-item ${isSelected ? 'selected' : ''}`}
+      >
+        {dog.name}
+      </li>
+    )
+  }
 
   return (
     <>
@@ -54,31 +67,19 @@ const HomePage = () => {
         <p>{error}</p>
       ) : (
         <>
-          <h2>Select Dog Breeds</h2>
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+          <h2 data-testid='selected-count'>
+            Select Dog Breeds ({selected.length} selected)
+          </h2>
+          <ul className='dog-list'>
             {filteredDogs.map((dog) => (
-              <li
-                key={dog.id}
-                data-testid={`dog-${dog.id}`}
-                onClick={() => toggleSelect(dog)}
-                style={{
-                  cursor: 'pointer',
-                  color: selected.some((i) => i.id === dog.id)
-                    ? 'blue'
-                    : 'gray',
-                }}
-              >
-                {dog.name}
-              </li>
+              <DogItem key={dog.id} dog={dog} />
             ))}
           </ul>
         </>
       )}
-      <>
-        <Link to='/compare-dogs' state={{ selected }} className='button-link'>
-          Compare Selected Dogs
-        </Link>
-      </>
+      <Link to='/compare-dogs' state={{ selected }} className='button-link'>
+        Compare Selected Dogs
+      </Link>
     </>
   )
 }

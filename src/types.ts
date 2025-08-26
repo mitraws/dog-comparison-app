@@ -10,3 +10,5 @@ export type Dog = {
   origin?: string;
   reference_image_id?: string;
 };
+
+export type ComparableKeys = 'weight' | 'height' | 'bred_for' | 'breed_group' | 'life_span' | 'temperament' | 'origin'
