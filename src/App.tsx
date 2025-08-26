@@ -6,7 +6,7 @@ import HomePage from './pages/HomePage'
 function App() {
   return (
     <Router>
-      <nav style={{ margin: 10 }}>
+      <nav>
         <Link to='/' style={{ padding: 5 }}>
           Home
         </Link>

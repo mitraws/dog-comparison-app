@@ -12,6 +12,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false)
   const [searchDog, setSearchDog] = useState('')
   const [error, setError] = useState('')
+  const [selected, setSelected] = useState<Dog[]>([])
 
   useEffect(() => {
     setLoading(true)
@@ -34,31 +35,60 @@ const HomePage = () => {
     dog.name.toLowerCase().includes(searchDog.toLowerCase())
   )
 
+  const toggleSelect = (item: Dog) => {
+    setSelected((prev) =>
+      prev.some((i) => i.id === item.id)
+        ? prev.filter((i) => i.id !== item.id)
+        : [...prev, item]
+    )
+  }
+
   return (
     <>
       <h1>Dog Breeds</h1>
-      <div>
-        <input
-          type='text'
-          value={searchDog}
-          onChange={handleInputChange}
-          placeholder='Type to search'
-        />
-      </div>
+      <input
+        type='text'
+        value={searchDog}
+        onChange={handleInputChange}
+        placeholder='Type to search'
+      />
       {loading ? (
         <p>Loading…</p>
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <ul>
-          {filteredDogs.map((dog) => (
-            <li key={dog.id}>{dog.name}</li>
-          ))}
-        </ul>
+        <>
+          <h2>Select Dog Breeds</h2>
+          <ul style={{ listStyle: 'none', padding: 0 }}>
+            {filteredDogs.map((dog) => (
+              <li
+                key={dog.id}
+                onClick={() => toggleSelect(dog)}
+                style={{
+                  cursor: 'pointer',
+                  color: selected.some((i) => i.id === dog.id)
+                    ? 'blue'
+                    : 'gray',
+                }}
+              >
+                {dog.name}
+              </li>
+            ))}
+          </ul>
+        </>
       )}
-      <div style={{ padding: '2rem' }}>
-        <Link to='/compare-dogs'>Go to Compare Dogs</Link>
-      </div>{' '}
+      <>
+        <Link
+          to='/compare-dogs'
+          style={{
+            padding: '0.5rem 1rem',
+            background: '#007BFF',
+            color: '#fff',
+          }}
+        >
+          Compare Selected Dogs
+        </Link>
+      </>
     </>
   )
 }
